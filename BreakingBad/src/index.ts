@@ -1,5 +1,13 @@
+import "reflect-metadata";
+import { initConnection } from "./database";
 import { getQuotesFromApi } from "./getQuotes/getQuotes";
 
-const getQuoteInstance = new getQuotesFromApi();
+async function testSaveQuote() {
+    await initConnection();
+    
+    const getQuotes = new getQuotesFromApi();
 
-getQuoteInstance.requestData();
+    await getQuotes.saveQuotes();
+}
+
+testSaveQuote();

@@ -1,0 +1,15 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "WalterWhite4",
+    "password": "12345",
+    "database": "breakingbadquotes",
+    "logging": true,
+    "synchronize": false,
+    "entities": ["dist/database/entities/**/*.js"],
+    "migrations": ["./dist/database/migration/**/*.js"],
+    "cli": {
+        "migrationsDir": "src/database/migration/"
+    }
+ }

@@ -9,28 +9,45 @@ export class getQuotesFromApi{
         url: "https://breakingbadapi.com/api/quotes",
     };
 
-    public async requestData(): Promise<Iquote[]> {
-        let response: AxiosResponse = await axios(this.axiosConfiguration);
-        console.log(response.data);
-        return [];
+    public async requestData(): Promise<void> {
+        let listaQuotes: Iquote[] = [];
+        
+        let responseAxios: AxiosResponse<Iquote[]> = await axios(this.axiosConfiguration);
+
+        listaQuotes  = responseAxios.data.map(quote => ({
+            author:  quote.author,
+            quote: quote.quote,
+            series: quote.series
+        }));
+
+
+        //this.saveQuotes(listaQuotes); //Para guardar la lista en la tabla
     }
 
-    public async saveQuotes() {
+    private async saveQuotes(listaQuotes: Iquote[]) {
         try {  
             await getConnection()
                 .createQueryBuilder()
                 .insert()
                 .into(Quotes)
-                .values([
-                    {
-                        quote: 'La vida es dura, pero es mas dura la verdura',
-                        author: 'JC',
-                        series: 'Codellege'
-                    },
-                ])
+                .values(listaQuotes)
                 .execute();
         } catch (error) {
             console.log("error");
+        }
+    }
+
+    public async GetQuotesByAuthor(author: string) {
+        try {
+            let quoteByAuthor = await getConnection()
+            .getRepository(Quotes)
+            .createQueryBuilder("quotes")
+            .where("quotes.author = :author", {author: author})
+            .execute();
+
+            console.log(quoteByAuthor);
+        } catch (error) {
+            console.log(`Error en GetQuotesByAuthor ${error}`)
         }
     }
 }

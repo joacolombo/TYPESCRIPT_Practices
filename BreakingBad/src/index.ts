@@ -2,12 +2,23 @@ import "reflect-metadata";
 import { initConnection } from "./database";
 import { getQuotesFromApi } from "./getQuotes/getQuotes";
 
-async function testSaveQuote() {
-    await initConnection();
-    
+const init = async () => {
+    await initConnection(); 
+    executeGetQuotes();
+};
+//Iniciar la base de datos
+
+
+
+const executeGetQuotes=() => {
+    //Instanciamos la clase "getQuotesFromApi" y se guarda la instancia en getQuotes
     const getQuotes = new getQuotesFromApi();
 
-    await getQuotes.saveQuotes();
-}
+    //getQuotes.requestData();
 
-testSaveQuote();
+    getQuotes.GetQuotesByAuthor("Walter White");
+};
+
+
+
+init();
